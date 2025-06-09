@@ -6,7 +6,7 @@ $(function(){
         var avatar = $('#avatar').val();
         if (link==null || link=="",content==null || content=="")
         {
-            alert("Tüm Alanı Doldur");
+            alert("Tüm Gerekli Alanı Doldurunuz");
             return false;
         }
         $.post(link, {"content": content, "username": username, "avatar_url": avatar,});
