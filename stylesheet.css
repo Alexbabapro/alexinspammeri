@@ -1,47 +1,23 @@
-/* === RESET & TEMEL STİLLER === */
-body, html {
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    font-family: Arial, sans-serif; /* Örnek font */
-    overflow-x: hidden; /* Yatay kaydırmayı engeller */
-}
+/* MEVCUT CSS KODLARIN (HEPSİ BURADA DURUYOR) */
 
-/* === ARKA PLAN === */
+/* === ARKA PLAN EKLENMİŞ HALİ === */
 body {
     background-image: url('https://resimlink.com/N-Kn3u_Q');
     background-size: cover;
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
-    position: relative;
+    /* Diğer body özelliklerin korunacak */
 }
 
-/* Arka plan üzerinde okunabilirlik için koyu overlay */
-body::after {
+/* Opaklık için overlay (isteğe bağlı) */
+body::before {
     content: "";
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.4); /* Opaklık ayarı (isteğe bağlı) */
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.3);
     z-index: -1;
-}
-
-/* === İÇERİK ALANI === */
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-    color: white; /* Yazı rengi (beyaz) */
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); /* Okunabilirlik artırıcı */
-}
-
-/* === MOBİL UYUMLULUK === */
-@media (max-width: 768px) {
-    body {
-        background-attachment: scroll; /* Mobilde sabit arka plan sorununu çözer */
-    }
 }
