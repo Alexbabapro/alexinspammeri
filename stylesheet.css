@@ -1,77 +1,54 @@
-@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
-* {
-    text-align: center;
-    font-family: 'Roboto Condensed', sans-serif;
+:root {
+  --bg-color: #121212;
+  --container-bg: #1e1e1e;
+  --input-bg: #2d2d2d;
+  --border-color: #444;
+  --text-color: #e0e0e0;
+  --primary-color: #256d7b;
+  --hover-color: #308899;
 }
 
 body {
-    background: #252424;
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-family: 'Roboto Condensed', sans-serif;
+  margin: 0;
+  padding: 20px;
+  min-height: 100vh;
 }
 
-#container {
-    margin-top: 80px;
-    margin: auto;
-    margin-right: 25px;
-    margin-left: 25px;
-    box-shadow: 7px 7px #0000006c;
-    background: rgb(85, 85, 85); 
-    padding: 25px;
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  background-color: var(--container-bg);
+  padding: 30px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
 }
 
-#header {
-    text-align: center;
-    margin-top: 47px;
-    margin: auto;
-    font-size: 39px
+input, textarea, button {
+  width: 100%;
+  padding: 15px;
+  margin-bottom: 20px;
+  background-color: var(--input-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  color: var(--text-color);
+  font-size: 16px;
 }
 
-#footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    padding: 10px;
-    background-color: rgba(0, 0, 0, 0.37); 
-    color: white;
-    text-align: center;
+button {
+  background-color: var(--primary-color);
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
 }
 
-.center-align {
-    text-align: center;
+button:hover {
+  background-color: var(--hover-color);
 }
 
-p {
-    font-size: 27px;
-}
-
-a, a:visited {
-    color: rgb(129, 129, 129)
-}
-
-#link, #username, #content, #avatar {
-    font-size: 25px;
-    background-color: #4e4e4e;
-    width: 75%;
-    padding: 20px;
-    border: 2px solid #000000c9;
-}
-
-#btn {
-    width: 35%;
-    font-size: 25px;
-    margin-top: 25px;
-    padding: 17px;
-    background-color: #1d6e6e;
-    border: 2px solid #000000c9;
-}
-
-#btn:hover { 
-    background-color: #365a3f;
-}
-
-#log {
-    text-align: center;
-    width: 5%;
-    background-color: rgb(110, 255, 43);
-    color: green;
+textarea {
+  min-height: 150px;
+  resize: vertical;
 }
