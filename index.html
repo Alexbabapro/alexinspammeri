@@ -3,8 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>✨ Animasyonlu Webhook Spammer</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <title>🚀 Animasyonlu Webhook Spammer</title>
   <style>
     :root {
       --primary: #5865f2;
@@ -12,61 +11,44 @@
       --success: #3ba55c;
       --dark: #36393f;
       --darker: #2f3136;
-      --text: #dcddde;
-    }
-    
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
     }
     
     body {
       background-color: #202225;
-      color: var(--text);
-      font-family: 'Poppins', sans-serif;
-      min-height: 100vh;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
       display: flex;
       justify-content: center;
       align-items: center;
+      min-height: 100vh;
+      margin: 0;
       padding: 20px;
       overflow-x: hidden;
     }
     
     .container {
       background-color: var(--dark);
+      border-radius: 12px;
+      padding: 25px;
       width: 100%;
       max-width: 500px;
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-      transform: translateY(20px);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      transform: scale(0.95);
       opacity: 0;
-      animation: fadeInUp 0.8s forwards 0.3s;
-      position: relative;
-      overflow: hidden;
+      animation: containerEntrance 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
     }
     
-    .container::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary), var(--success));
-      animation: progressBar 2s infinite linear;
+    @keyframes containerEntrance {
+      0% { transform: scale(0.95); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
     }
     
     h1 {
-      text-align: center;
-      margin-bottom: 25px;
-      font-weight: 700;
       color: white;
+      text-align: center;
+      margin-bottom: 20px;
       position: relative;
       display: inline-block;
-      left: 50%;
-      transform: translateX(-50%);
     }
     
     h1::after {
@@ -78,36 +60,37 @@
       height: 3px;
       background: linear-gradient(90deg, var(--primary), transparent);
       border-radius: 3px;
+      animation: underlineSlide 1s forwards;
     }
     
-    .input-group {
-      margin-bottom: 20px;
-      animation: fadeIn 0.6s forwards;
-      animation-delay: 0.5s;
-      opacity: 0;
-    }
-    
-    .input-group:nth-child(2) { animation-delay: 0.6s; }
-    .input-group:nth-child(3) { animation-delay: 0.7s; }
-    .input-group:nth-child(4) { animation-delay: 0.8s; }
-    
-    label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      color: var(--text);
+    @keyframes underlineSlide {
+      from { width: 0; }
+      to { width: 100%; }
     }
     
     input {
       width: 100%;
       padding: 14px;
+      margin-bottom: 15px;
       background-color: var(--darker);
       border: 2px solid transparent;
       border-radius: 8px;
       color: white;
       font-size: 15px;
       transition: all 0.3s ease;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: inputEntrance 0.5s forwards;
     }
+    
+    @keyframes inputEntrance {
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    input:nth-child(1) { animation-delay: 0.2s; }
+    input:nth-child(2) { animation-delay: 0.3s; }
+    input:nth-child(3) { animation-delay: 0.4s; }
+    input:nth-child(4) { animation-delay: 0.5s; }
     
     input:focus {
       outline: none;
@@ -118,10 +101,14 @@
     .button-group {
       display: flex;
       gap: 12px;
-      margin-top: 30px;
-      animation: fadeIn 0.6s forwards;
-      animation-delay: 1s;
+      margin-top: 25px;
       opacity: 0;
+      transform: translateY(10px);
+      animation: buttonEntrance 0.5s forwards 0.7s;
+    }
+    
+    @keyframes buttonEntrance {
+      to { opacity: 1; transform: translateY(0); }
     }
     
     button {
@@ -133,10 +120,24 @@
       font-size: 16px;
       cursor: pointer;
       transition: all 0.3s ease;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    button::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(rgba(255,255,255,0.1), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    button:hover::after {
+      opacity: 1;
     }
     
     #startBtn {
@@ -145,7 +146,6 @@
     }
     
     #startBtn:hover {
-      background-color: #4752c4;
       transform: translateY(-2px);
       box-shadow: 0 5px 15px rgba(88, 101, 242, 0.4);
     }
@@ -157,51 +157,67 @@
     }
     
     #stopBtn:hover {
-      background-color: #d13c3f;
       transform: translateY(-2px);
       box-shadow: 0 5px 15px rgba(237, 66, 69, 0.4);
     }
     
-    .status {
+    .status-container {
       margin-top: 25px;
-      padding: 15px;
+      opacity: 0;
+      animation: statusEntrance 0.5s forwards 0.9s;
+    }
+    
+    @keyframes statusEntrance {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    #counter {
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+      color: var(--success);
+      margin-bottom: 10px;
+    }
+    
+    #log {
+      padding: 12px;
       border-radius: 8px;
       text-align: center;
       font-size: 15px;
-      animation: fadeIn 0.6s forwards;
-      animation-delay: 1.1s;
-      opacity: 0;
-    }
-    
-    .counter {
-      font-size: 18px;
-      font-weight: 600;
-      margin-top: 15px;
+      background-color: rgba(114, 118, 125, 0.2);
       color: var(--success);
-      text-align: center;
-      animation: pulse 2s infinite;
+      transition: all 0.3s;
     }
     
-    /* Animations */
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    #log.success {
+      background-color: rgba(59, 165, 92, 0.2);
+      color: var(--success);
     }
     
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+    #log.error {
+      background-color: rgba(237, 66, 69, 0.2);
+      color: var(--danger);
     }
     
-    @keyframes progressBar {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
+    .message-confirm {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--primary);
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      transform: translateX(150%);
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      z-index: 100;
+    }
+    
+    .message-confirm.show {
+      transform: translateX(0);
+      opacity: 1;
     }
     
     @keyframes pulse {
@@ -210,56 +226,31 @@
       100% { transform: scale(1); }
     }
     
-    /* Loading spinner */
     .spinner {
-      display: none;
+      display: inline-block;
       width: 20px;
       height: 20px;
       border: 3px solid rgba(255, 255, 255, 0.3);
       border-radius: 50%;
       border-top-color: white;
       animation: spin 1s ease-in-out infinite;
+      vertical-align: middle;
+      margin-right: 8px;
     }
     
     @keyframes spin {
       to { transform: rotate(360deg); }
     }
-    
-    /* Responsive */
-    @media (max-width: 600px) {
-      .container {
-        padding: 20px;
-      }
-      
-      .button-group {
-        flex-direction: column;
-      }
-    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>⚡ Webhook Spammer</h1>
+    <h1>🚀 Webhook Spammer Pro</h1>
     
-    <div class="input-group">
-      <label for="link">Webhook URL</label>
-      <input type="text" id="link" placeholder="https://discord.com/api/webhooks/...">
-    </div>
-    
-    <div class="input-group">
-      <label for="username">Bot İsmi</label>
-      <input type="text" id="username" placeholder="Spammer Bot" value="Spammer Bot">
-    </div>
-    
-    <div class="input-group">
-      <label for="avatar">Avatar URL (Opsiyonel)</label>
-      <input type="text" id="avatar" placeholder="https://...">
-    </div>
-    
-    <div class="input-group">
-      <label for="content">Mesaj İçeriği</label>
-      <input type="text" id="content" placeholder="Spam mesajınız...">
-    </div>
+    <input type="text" id="link" placeholder="Webhook URL">
+    <input type="text" id="username" placeholder="Bot İsmi" value="Spammer Pro">
+    <input type="text" id="avatar" placeholder="Avatar URL (Opsiyonel)">
+    <input type="text" id="content" placeholder="Gönderilecek Mesaj">
     
     <div class="button-group">
       <button id="startBtn">
@@ -272,15 +263,22 @@
       </button>
     </div>
     
-    <div class="counter" id="counter">Gönderilen: 0</div>
-    <div class="status" id="log"></div>
+    <div class="status-container">
+      <div id="counter">Gönderilen: 0</div>
+      <div id="log" class="success">Hazır...</div>
+    </div>
+  </div>
+  
+  <div class="message-confirm" id="messageConfirm">
+    Mesaj başarıyla gönderildi!
   </div>
 
   <script>
+    // Değişkenler
     let isSending = false;
     let counter = 0;
-    let sendInterval;
-    const MAX_SPEED = 0; // ms (0 = maksimum hız)
+    let sendQueue = [];
+    const MAX_CONCURRENT_REQUESTS = 10;
     
     // Elementler
     const startBtn = document.getElementById('startBtn');
@@ -289,19 +287,25 @@
     const stopSpinner = document.getElementById('stopSpinner');
     const counterEl = document.getElementById('counter');
     const logEl = document.getElementById('log');
+    const messageConfirm = document.getElementById('messageConfirm');
     
-    // Animasyonlu log fonksiyonu
-    function log(message, type = 'info') {
+    // Mesaj onay animasyonu
+    function showMessageConfirm() {
+      messageConfirm.classList.add('show');
+      setTimeout(() => {
+        messageConfirm.classList.remove('show');
+      }, 2000);
+    }
+    
+    // Log fonksiyonu
+    function log(message, type = 'success') {
       logEl.textContent = message;
-      logEl.style.background = type === 'error' ? 'rgba(237, 66, 69, 0.2)' : 
-                              type === 'success' ? 'rgba(59, 165, 92, 0.2)' : 'rgba(114, 118, 125, 0.2)';
-      logEl.style.color = type === 'error' ? 'var(--danger)' : 
-                         type === 'success' ? 'var(--success)' : 'var(--text)';
+      logEl.className = type;
       
-      // Animasyon ekle
+      // Log animasyonu
       logEl.style.animation = 'none';
-      void logEl.offsetWidth; // Trigger reflow
-      logEl.style.animation = 'fadeIn 0.4s';
+      void logEl.offsetWidth;
+      logEl.style.animation = 'pulse 0.5s';
     }
     
     // Mesaj gönderme fonksiyonu
@@ -312,7 +316,7 @@
       const content = document.getElementById('content').value;
       
       try {
-        await fetch(webhookUrl, {
+        const response = await fetch(webhookUrl, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -322,6 +326,8 @@
           })
         });
         
+        if (!response.ok) throw new Error(`HTTP error: ${response.status}`);
+        
         counter++;
         counterEl.textContent = `Gönderilen: ${counter}`;
         
@@ -330,13 +336,33 @@
         void counterEl.offsetWidth;
         counterEl.style.animation = 'pulse 0.3s';
         
+        // Mesaj onay animasyonu
+        showMessageConfirm();
+        
+        return true;
       } catch (error) {
         log(`Hata: ${error.message}`, 'error');
-        stopSending();
+        return false;
       }
     }
     
-    // Gönderimi başlat
+    // Gönderim döngüsü
+    async function sendingLoop() {
+      while(isSending) {
+        if (sendQueue.length < MAX_CONCURRENT_REQUESTS) {
+          sendQueue.push(
+            sendMessage().finally(() => {
+              sendQueue = sendQueue.filter(req => req !== this);
+            })
+          );
+        }
+        
+        // Çok küçük bir bekleme (tarayıcının kilitlenmemesi için)
+        await new Promise(resolve => setTimeout(resolve, 10));
+      }
+    }
+    
+    // Başlatma fonksiyonu
     function startSending() {
       const webhookUrl = document.getElementById('link').value;
       const content = document.getElementById('content').value;
@@ -353,32 +379,23 @@
       stopSpinner.style.display = 'inline-block';
       log('Maksimum hızda mesaj gönderiliyor...', 'success');
       
-      // İlk mesajı hemen gönder
-      sendMessage();
-      
-      // Sonrakiler için interval
-      sendInterval = setInterval(() => {
-        if (isSending) {
-          sendMessage();
-        }
-      }, MAX_SPEED);
+      sendingLoop();
     }
     
-    // Gönderimi durdur
+    // Durdurma fonksiyonu
     function stopSending() {
       isSending = false;
-      clearInterval(sendInterval);
       startBtn.style.display = 'flex';
       stopBtn.style.display = 'none';
       stopSpinner.style.display = 'none';
-      log(`Gönderim durduruldu. Toplam ${counter} mesaj gönderildi.`);
+      log(`Durduruldu. Toplam ${counter} mesaj gönderildi.`, 'success');
     }
     
     // Event listeners
     startBtn.addEventListener('click', startSending);
     stopBtn.addEventListener('click', stopSending);
     
-    // Sayfa yüklendiğinde spinner'ı göster
+    // Sayfa yüklenirken spinner'ı göster
     window.addEventListener('load', () => {
       startSpinner.style.display = 'inline-block';
     });
