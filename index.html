@@ -3,129 +3,157 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Alex And Ropl - Webhook Spammer</title>
-  <meta name="author" content="Alex">
-  <meta name="description" content="Otomatik Webhook Mesaj Atıcı">
+  <title>Ultra Hızlı Webhook Spammer</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #2c2f33;
-      color: white;
-      text-align: center;
-      padding: 20px;
+    :root {
+      --discord-dark: #36393f;
+      --discord-blue: #5865f2;
+      --discord-red: #ed4245;
+      --discord-green: #3ba55c;
     }
-    #container {
-      background-color: #23272a;
-      border-radius: 10px;
+    
+    body {
+      background-color: #202225;
+      color: white;
+      font-family: 'Segoe UI', sans-serif;
       padding: 20px;
+      text-align: center;
+    }
+    
+    #container {
+      background-color: var(--discord-dark);
       max-width: 500px;
       margin: 0 auto;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
+    
     input {
-      width: 80%;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 5px;
-      border: none;
-    }
-    button {
-      background-color: #5865F2;
+      width: 100%;
+      padding: 12px;
+      margin: 8px 0;
+      background-color: #2f3136;
+      border: 1px solid #202225;
+      border-radius: 4px;
       color: white;
-      border: none;
-      padding: 10px 20px;
-      margin: 5px;
-      border-radius: 5px;
-      cursor: pointer;
-      font-weight: bold;
     }
+    
+    .button-group {
+      margin: 15px 0;
+    }
+    
+    button {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    #startBtn {
+      background-color: var(--discord-blue);
+      color: white;
+    }
+    
     #stopBtn {
-      background-color: #f04747;
+      background-color: var(--discord-red);
+      color: white;
       display: none;
     }
-    #log {
+    
+    #counter {
       margin-top: 15px;
-      color: #43b581;
+      font-size: 1.2em;
+      color: var(--discord-green);
     }
   </style>
 </head>
 <body>
   <div id="container">
-    <h1>Webhook Spammer</h1>
-    <p>Webhook Linki:</p>
+    <h1>⚡ Ultra Hızlı Webhook Spammer</h1>
     <input type="text" id="link" placeholder="Webhook URL'si">
-    <p>Bot Adı:</p>
-    <input type="text" id="username" placeholder="Bot İsmi" value="Alex And Ropl">
-    <p>Avatar Linki :</p>
-    <input type="text" id="avatar" placeholder="Avatar URL">
-    <p>Gönderilecek Mesaj:</p>
-    <input type="text" id="content" placeholder="Yazılacak mesaj...">
-    <br>
-    <button id="startBtn">BAŞLAT</button>
-    <button id="stopBtn">DURDUR</button>
-    <p id="log"></p>
+    <input type="text" id="username" placeholder="Bot İsmi" value="Hızlı Spammer">
+    <input type="text" id="avatar" placeholder="Avatar URL (Opsiyonel)">
+    <input type="text" id="content" placeholder="Gönderilecek Mesaj">
+    
+    <div class="button-group">
+      <button id="startBtn">BAŞLAT (MAX HIZ)</button>
+      <button id="stopBtn">DURDUR</button>
+    </div>
+    
+    <div id="counter">Gönderilen: 0</div>
+    <div id="log"></div>
   </div>
 
   <script>
-    const startBtn = document.getElementById("startBtn");
-    const stopBtn = document.getElementById("stopBtn");
-    const log = document.getElementById("log");
     let isSending = false;
-    let interval;
-
-    startBtn.addEventListener("click", () => {
+    let counter = 0;
+    let speed = 0; // 0ms delay (maksimum hız)
+    
+    document.getElementById("startBtn").addEventListener("click", startSending);
+    document.getElementById("stopBtn").addEventListener("click", stopSending);
+    
+    function startSending() {
       const webhookUrl = document.getElementById("link").value;
-      const username = document.getElementById("username").value;
-      const avatar = document.getElementById("avatar").value;
       const content = document.getElementById("content").value;
-
+      
       if (!webhookUrl || !content) {
-        log.textContent = "HATA: Webhook URL'si ve mesaj boş olamaz!";
+        log("HATA: Webhook URL'si ve mesaj boş olamaz!", "error");
         return;
       }
-
+      
       isSending = true;
-      startBtn.style.display = "none";
-      stopBtn.style.display = "inline-block";
-      log.textContent = "Mesaj gönderiliyor...";
-
-      // Her 1 saniyede bir mesaj gönder
-      interval = setInterval(() => {
-        if (!isSending) return;
-
-        fetch(webhookUrl, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            username: username,
-            avatar_url: avatar,
-            content: content
-          })
-        })
-        .then(response => {
-          if (!response.ok) {
-            log.textContent = "Hata: " + response.status;
-            clearInterval(interval);
-            resetButtons();
+      document.getElementById("startBtn").style.display = "none";
+      document.getElementById("stopBtn").style.display = "inline-block";
+      log("Maksimum hızda mesaj gönderiliyor...", "success");
+      
+      // Asenkron gönderim fonksiyonu
+      async function sendLoop() {
+        const username = document.getElementById("username").value;
+        const avatar = document.getElementById("avatar").value;
+        
+        while(isSending) {
+          try {
+            await fetch(webhookUrl, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                username: username,
+                avatar_url: avatar,
+                content: content
+              })
+            });
+            
+            counter++;
+            document.getElementById("counter").textContent = `Gönderilen: ${counter}`;
+            
+            // 0ms bekleme ile maksimum hız
+            await new Promise(resolve => setTimeout(resolve, speed));
+            
+          } catch (error) {
+            log("Hata: " + error, "error");
+            stopSending();
           }
-        })
-        .catch(error => {
-          log.textContent = "Hata: " + error;
-          clearInterval(interval);
-          resetButtons();
-        });
-      }, 1000); // 1000ms = 1 saniye
-    });
-
-    stopBtn.addEventListener("click", () => {
+        }
+      }
+      
+      sendLoop();
+    }
+    
+    function stopSending() {
       isSending = false;
-      clearInterval(interval);
-      log.textContent = "Mesaj gönderimi durduruldu.";
-      resetButtons();
-    });
-
-    function resetButtons() {
-      startBtn.style.display = "inline-block";
-      stopBtn.style.display = "none";
+      document.getElementById("startBtn").style.display = "inline-block";
+      document.getElementById("stopBtn").style.display = "none";
+      log(`Gönderim durduruldu. Toplam ${counter} mesaj gönderildi.`, "info");
+    }
+    
+    function log(message, type = "info") {
+      const logElement = document.getElementById("log");
+      logElement.textContent = message;
+      logElement.style.color = type === "error" ? "#ed4245" : 
+                             type === "success" ? "#3ba55c" : "#dcddde";
     }
   </script>
 </body>
