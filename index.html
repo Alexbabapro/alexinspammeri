@@ -1,39 +1,132 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="UTF-8">
+<head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Alex And Ropl</title>
+  <title>Alex And Ropl - Webhook Spammer</title>
   <meta name="author" content="Alex">
-  <meta name="description" content="Webook Mesaj Atıcı">
-  <meta name="keywords" content="discord,Alex,webhook,Ropl">
-  <meta name="title" content="Discord Webhook Mesaj Atıcı">
-  <link rel="stylesheet" href="stylesheet.css" type="text/css">
-  </head>
-  <body>
+  <meta name="description" content="Otomatik Webhook Mesaj Atıcı">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #2c2f33;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+    #container {
+      background-color: #23272a;
+      border-radius: 10px;
+      padding: 20px;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+    input {
+      width: 80%;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 5px;
+      border: none;
+    }
+    button {
+      background-color: #5865F2;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 5px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    #stopBtn {
+      background-color: #f04747;
+      display: none;
+    }
+    #log {
+      margin-top: 15px;
+      color: #43b581;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <h1>Webhook Spammer</h1>
+    <p>Webhook Linki:</p>
+    <input type="text" id="link" placeholder="Webhook URL'si">
+    <p>Bot Adı:</p>
+    <input type="text" id="username" placeholder="Bot İsmi" value="Alex And Ropl">
+    <p>Avatar Linki :</p>
+    <input type="text" id="avatar" placeholder="Avatar URL">
+    <p>Gönderilecek Mesaj:</p>
+    <input type="text" id="content" placeholder="Yazılacak mesaj...">
+    <br>
+    <button id="startBtn">BAŞLAT</button>
+    <button id="stopBtn">DURDUR</button>
+    <p id="log"></p>
+  </div>
 
-    <div id="header">
-      <h>Webhook Founder: ropl and Alex</h>
-    </div>
-    <div id="container">
-      <div class="center-align">
-        <p>Webhook Linki:</p><input type='text' id="link" placeholder="Webook Linki. https://discordapp.com/api/webhooks/462759446225879041/CX-NNGFq5zjht82fQSJUTN2Or2DGq8UTwoIlhHgZ7lTJ6-wlHlRshIRuOC0nE6frfSwG">
-        <p>Bot Adı:</p><input type="text" id="username" placeholder="Webooka koyucağınız isim" value="Alex And Ropl">
-        <p>Avatar Linki:</p><input type="text" id="avatar" placeholder="Resim Urlsi * İSTEGE BAGLI">
-        <p>Yazı:</p><input type="text" id="content" placeholder="Yazılacak Metin">
-        <br>
-        <button id="btn">Gönder</button>
-        <center>
-       <!--JS log in the works atm-->
-        <p id='log'></p>
-      </center>
-    </div>
-  </div> 
-  </div>
-  <div id="footer">
-    Copyright &copy; <a href="">Alex And Ropl</a>
-  </div>
- <script src="jquery.js"></script>
-  <script src="main.js"></script>
-  </body>
+  <script>
+    const startBtn = document.getElementById("startBtn");
+    const stopBtn = document.getElementById("stopBtn");
+    const log = document.getElementById("log");
+    let isSending = false;
+    let interval;
+
+    startBtn.addEventListener("click", () => {
+      const webhookUrl = document.getElementById("link").value;
+      const username = document.getElementById("username").value;
+      const avatar = document.getElementById("avatar").value;
+      const content = document.getElementById("content").value;
+
+      if (!webhookUrl || !content) {
+        log.textContent = "HATA: Webhook URL'si ve mesaj boş olamaz!";
+        return;
+      }
+
+      isSending = true;
+      startBtn.style.display = "none";
+      stopBtn.style.display = "inline-block";
+      log.textContent = "Mesaj gönderiliyor...";
+
+      // Her 1 saniyede bir mesaj gönder
+      interval = setInterval(() => {
+        if (!isSending) return;
+
+        fetch(webhookUrl, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            username: username,
+            avatar_url: avatar,
+            content: content
+          })
+        })
+        .then(response => {
+          if (!response.ok) {
+            log.textContent = "Hata: " + response.status;
+            clearInterval(interval);
+            resetButtons();
+          }
+        })
+        .catch(error => {
+          log.textContent = "Hata: " + error;
+          clearInterval(interval);
+          resetButtons();
+        });
+      }, 1000); // 1000ms = 1 saniye
+    });
+
+    stopBtn.addEventListener("click", () => {
+      isSending = false;
+      clearInterval(interval);
+      log.textContent = "Mesaj gönderimi durduruldu.";
+      resetButtons();
+    });
+
+    function resetButtons() {
+      startBtn.style.display = "inline-block";
+      stopBtn.style.display = "none";
+    }
+  </script>
+</body>
 </html>
